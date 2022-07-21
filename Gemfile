@@ -8,6 +8,9 @@ gem 'dotenv-rails', require: 'dotenv/rails-now' # Load ENV vars before other gem
 
 gem 'rails', '>= 6.1.4'
 
+# farady-web is a gem that provides a web server for Faraday.
+gem 'faraday'
+
 # Active Storage
 gem "active_storage_validations"
 gem "aws-sdk-s3", require: false

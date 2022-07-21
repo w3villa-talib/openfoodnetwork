@@ -63,9 +63,9 @@ module Spree
 
     # Send devise-based user emails asyncronously via ActiveJob
     # See: https://github.com/heartcombo/devise/tree/v3.5.10#activejob-integration
-    def send_devise_notification(notification, *args)
-      devise_mailer.public_send(notification, self, *args).deliver_later
-    end
+    # def send_devise_notification(notification, *args)
+    #   devise_mailer.public_send(notification, self, *args).deliver_later
+    # end
 
     def regenerate_reset_password_token
       set_reset_password_token
@@ -100,13 +100,13 @@ module Spree
     # This is a Devise Confirmable callback that runs on email confirmation
     # It sends a welcome email after the user email is confirmed
     def after_confirmation
-      return unless confirmed? && unconfirmed_email.nil? && !unconfirmed_email_changed?
+      # return unless confirmed? && unconfirmed_email.nil? && !unconfirmed_email_changed?
 
-      send_signup_confirmation
+      # send_signup_confirmation
     end
 
     def send_signup_confirmation
-      Spree::UserMailer.signup_confirmation(self).deliver_later
+      # Spree::UserMailer.signup_confirmation(self).deliver_later
     end
 
     def associate_customers

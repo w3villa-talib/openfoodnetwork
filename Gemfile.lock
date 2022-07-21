@@ -731,6 +731,7 @@ DEPENDENCIES
   digest
   dotenv-rails
   factory_bot_rails (= 6.2.0)
+  faraday
   ffaker
   flipper
   flipper-active_record
@@ -828,4 +829,4 @@ RUBY VERSION
    ruby 3.0.3p157
 
 BUNDLED WITH
-   2.1.4
+   2.2.32

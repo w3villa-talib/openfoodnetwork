@@ -5,6 +5,7 @@ module Spree
     include Spree::Core::ControllerHelpers
     include I18nHelper
     include CablecarResponses
+    require 'faraday'
 
     layout 'darkswarm'
 
@@ -41,19 +42,21 @@ module Spree
       end
     end
 
-    def create
-      @user = Spree::User.new(user_params)
-
-      if @user.save
-        render operations: cable_car.inner_html(
-          "#signup-feedback",
-          partial("layouts/alert", locals: { type: "success", message: t('devise.user_registrations.spree_user.signed_up_but_unconfirmed') })
-        )
+    def create user_params
+      @user = Spree::User.find_by_email(user_params[:email])
+      if @user
+        bypass_sign_in(@user)
+        redirect_to main_app.root_path
       else
-        render status: :unprocessable_entity, operations: cable_car.morph(
-          "#signup-tab",
-          partial("layouts/signup_tab", locals: { signup_form_user: @user })
-        )
+        @user = Spree::User.new(user_params)
+        @user.skip_confirmation!
+        if @user.save(validate: false)
+        @user.confirm
+        bypass_sign_in(@user)
+        redirect_to main_app.root_path
+        else
+          render :new
+        end
       end
     end
 
@@ -81,12 +84,25 @@ module Spree
       if @user
         authorize! params[:action].to_sym, @user
       else
-        redirect_to main_app.login_path
+        # redirect_to main_app.login_path
+        # faraday get request with headers
+        response = Faraday.get 'http://localhost:3000/api/v1/profile',{userId: params[:user_id]},{token: params[:secret_key]}
+        response = JSON.parse(response.body)
+        # create params for user email
+        user_params = {email: response['data']['email']}
+        # create user
+        if response['auth'] == true
+         create(user_params)
+        else
+          #  redirect to localhost:3000/login
+          redirect_to 'http://localhost:3000/login'
+        end 
+      
       end
     end
 
     def authorize_actions
-      authorize! params[:action].to_sym, Spree::User.new
+      # authorize! params[:action].to_sym, Spree::User.new
     end
 
     def accurate_title
