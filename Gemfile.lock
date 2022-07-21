@@ -119,7 +119,7 @@ GEM
     activerecord (6.1.6)
       activemodel (= 6.1.6)
       activesupport (= 6.1.6)
-    activerecord-import (1.3.0)
+    activerecord-import (1.4.0)
       activerecord (>= 4.2)
     activerecord-postgresql-adapter (0.0.1)
       pg
@@ -639,7 +639,7 @@ GEM
     tilt (2.0.10)
     timecop (0.9.4)
     ttfunk (1.7.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
